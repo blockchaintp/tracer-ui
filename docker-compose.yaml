@@ -1,0 +1,54 @@
+# Copyright 2019 Blockchain Technology Partners
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ------------------------------------------------------------------------------
+
+version: '3'
+services:
+  router:
+    image: binocarlos/noxy
+    ports:
+      - 80:80
+    depends_on:
+      - api
+      - frontend
+    environment:
+      - NOXY_DEFAULT_HOST=frontend
+      - NOXY_DEFAULT_PORT=8080
+      - NOXY_DEFAULT_WS=1
+      - NOXY_API_FRONT=/api/v1
+      - NOXY_API_HOST=api
+  frontend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    entrypoint: bash -c 'if [ -n "$MANUALRUN" ]; then tail -f /dev/null; else yarn run develop; fi'
+    environment:
+      - NODE_ENV=development
+      - MANUALRUN
+    volumes:
+      - ./src:/app/frontend/src
+      - ./config:/app/frontend/config
+      - ./dist:/app/frontend/dist
+  api:
+    build:
+      context: ./mock-api
+      dockerfile: Dockerfile
+    entrypoint: bash -c 'if [ -n "$MANUALRUN" ]; then tail -f /dev/null; else yarn run start; fi'
+    environment:
+      - NODE_ENV=development
+      - MANUALRUN
+    volumes:
+      - ./mock-api/src:/app/api/src
