@@ -39,13 +39,42 @@ function dev(){
     esac
 }
 
+function prodbuild(){
+    if [ ! -z ${ISOLATION_ID} ]; then
+        docker-compose -f ./docker-compose-build.yaml build prod
+    else
+        echo "Set ISOLATION_ID"
+        exit 1
+    fi
+}
+
+function prodclean(){
+    docker rmi -f $(docker images --filter "dangling=true" -q)
+    docker rmi -f ${PROD_IMAGE}:${ISOLATION_ID}
+}
+
+function prod(){
+    local subcommand="$1"
+    case $subcommand in
+        "build")
+            prodbuild
+            ;;
+        "clean")
+            prodclean
+            ;;
+        *)
+            echo "$COMMAND [build | clean]"
+            ;;
+    esac
+}
+
 source .env
 case $COMMAND in
    "dev")
         dev $SUBCOMMAND
         ;;
     "prod")
-        prod
+        prod $SUBCOMMAND
         ;;
     *)
         echo "$0 dev [mock] | prod | clean"
