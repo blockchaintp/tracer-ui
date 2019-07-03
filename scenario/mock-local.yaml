@@ -28,27 +28,34 @@ services:
       - NOXY_DEFAULT_WS=1
       - NOXY_API_FRONT=/api/v1
       - NOXY_API_HOST=api
+    networks:
+      - tracer-ui_mock
+
   frontend:
-    build:
-      context: ./
-      dockerfile: Dockerfile
+    image: "${DEV_IMAGE}:${ISOLATION_ID}"
     ports:
       - 8080:8080
-    entrypoint: bash -c 'if [ -n "$MANUALRUN" ]; then tail -f /dev/null; else yarn run develop; fi'
+    entrypoint: bash -c 'yarn run develop'
     environment:
       - NODE_ENV=development
-      - MANUALRUN
     volumes:
-      - ./src:/app/frontend/src
-      - ./config:/app/frontend/config
-      - ./dist:/app/frontend/dist
+      - ../src:/app/frontend/src
+      - ../config:/app/frontend/config
+      - ../dist:/app/frontend/dist
+    networks:
+      - tracer-ui_mock
+
   api:
     build:
-      context: ./mock-api
+      context: ../mock-api
       dockerfile: Dockerfile
-    entrypoint: bash -c 'if [ -n "$MANUALRUN" ]; then tail -f /dev/null; else yarn run start; fi'
+    entrypoint: bash -c 'yarn run serve'
     environment:
       - NODE_ENV=development
-      - MANUALRUN
     volumes:
-      - ./mock-api/src:/app/api/src
+      - ../mock-api/src:/app/api/src
+    networks:
+      - tracer-ui_mock
+
+networks:
+  tracer-ui_mock:

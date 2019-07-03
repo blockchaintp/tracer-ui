@@ -47,7 +47,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh "docker-compose -f docker-compose.yaml build"
+        sh "echo TODO"
       }
     }
 
