@@ -22,11 +22,9 @@ import Tab from '@material-ui/core/Tab';
 import SimpleTable from 'components/table/SimpleTable'
 
 const transactionFields =[{
-  title: 'Payload',
-  name: 'name',
-}, {
-  title: 'Created',
-  name: 'created',
+  title: 'Event Type',
+},{
+  title: 'Attributes',
 }]
 
 const styles = theme => ({
@@ -47,6 +45,20 @@ class HomePage extends React.Component {
     } = this.props
     return (
       <div>
+        <Tabs value={this.state.value} onChange={(event, newValue)=>{
+          this.state.value = newValue
+        }}>
+          <Tab label="Read Transactions" />
+          <Tab label="Write Transactions" />
+        </Tabs>
+        {this.state.value === 0 && <SimpleTable
+          data={ readTransactions }
+          fields={ transactionFields }
+        />}
+        {this.state.value === 1 && <SimpleTable
+          data={ writeTransactions }
+          fields={ transactionFields }
+        />}
       </div>
     )
   }

@@ -23,6 +23,9 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 
 const styles = theme => {
   return {
@@ -106,34 +109,7 @@ class SimpleTable extends React.Component {
             }
             <TableBody>
               {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(dataRow => {
-                return (
-                  <TableRow
-                    hover
-                    onClick={event => {
-                      if(!onRowClick) return
-                      onRowClick(event, dataRow.id)
-                    }}
-                    tabIndex={-1}
-                    key={dataRow.id}
-                  >
-                    {
-                      fields.map((field, i) => {
-                        return (
-                          <TableCell key={ i } align={ field.numeric ? 'right' : 'left' } className={ classes.autoCell }>
-                            { dataRow[field.name] }
-                          </TableCell>
-                        )
-                      })
-                    }
-                    {
-                      getActions ? (
-                        <TableCell align='right'>
-                          { getActions(dataRow) }
-                        </TableCell>
-                      ) : null
-                    }
-                  </TableRow>
-                );
+                  return (<TableCell>{console.log(dataRow)}</TableCell>)
               })}
             </TableBody>
           </Table>

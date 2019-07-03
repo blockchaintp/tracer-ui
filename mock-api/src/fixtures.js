@@ -13,25 +13,25 @@
 // limitations under the License.
 // ------------------------------------------------------------------------------
 const read = [{
-  name: 'a',
-  type: 'read',
+  eventType: 'sawtooth/blockchain',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
 },{
-  name: 'b',
-  type: 'read',
+  eventType: 'sawtooth/blockchain',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
 },{
-  name: 'c',
-  type: 'read',
+  eventType: 'sawtooth/blockchain',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
 }]
 
 const write = [{
-  name: 'd',
-  type: 'write',
+  eventType: 'sawtooth/blockchain',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
 },{
-  name: 'e',
-  type: 'write',
+  eventType: 'sawtooth/blockchain',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
 },{
-  name: 'f',
-  type: 'write',
+  eventType: 'sawtooth/blockchain',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
 }]
 
 module.exports = {

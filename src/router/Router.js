@@ -34,9 +34,6 @@ import HomePage from 'containers/Home'
       route: selectors.router.route(state),
     }
   },
-  {
-
-  }
 )
 class Router extends React.Component {
 

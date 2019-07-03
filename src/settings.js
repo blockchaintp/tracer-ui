@@ -25,7 +25,7 @@ const icons = {
 
 const settings = {
   title: 'Tracer UI',
-  api: '/api/v1',
+  api: '/transactions',
   devMode: process.env.NODE_ENV === 'development',
   snackbarAutoHide: 5000,
   sideMenuWidth: 250,
