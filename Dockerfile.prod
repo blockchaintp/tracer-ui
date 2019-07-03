@@ -13,26 +13,22 @@
 # limitations under the License.
 # ------------------------------------------------------------------------------
 
-.PHONY: build
-build:
-	docker-compose build
+FROM mhart/alpine-node:11.12 as builder
+RUN apk update
+RUN apk upgrade
+RUN apk add bash git
+WORKDIR /app/frontend
+COPY ./package.json /app/frontend/package.json
+COPY ./yarn.lock /app/frontend/yarn.lock
+RUN yarn install
+COPY ./ /app/frontend
+RUN cd /app/frontend && yarn build
 
-.PHONY: dev
-dev:
-	docker-compose up -d
+FROM nginx:alpine
+COPY ./nginx.conf /etc/nginx/nginx.template
+COPY ./nginx_entry.sh /nginx_entry.sh
+COPY --from=builder /app/frontend/dist /www
+RUN apk update && apk upgrade
+RUN apk add bash
 
-.PHONY: frontend.cli
-frontend.cli:
-	docker-compose exec frontend bash
-
-.PHONY: frontend.run
-frontend.run:
-	docker-compose exec frontend yarn run develop
-
-.PHONY: api.cli
-api.cli:
-	docker-compose exec api bash
-
-.PHONY: api.run
-api.run:
-	docker-compose exec api yarn run serve
+ENTRYPOINT ["bash","nginx_entry.sh"]

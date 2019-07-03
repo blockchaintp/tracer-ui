@@ -1,23 +1,9 @@
-## tracer-ui
+# Tracer UI
 
-```bash
-make build
-export MANUALRUN=1
-make dev
-```
+TO DO
 
-In one window:
+# Development and release process
 
-```bash
-make api.cli
-yarn serve
-```
+## Development process
 
-In another window:
-
-```bash
-make frontend.cli
-yarn develop
-```
-
-Then open http://localhost
+`./build.sh dev run` (to run UI with a mock backend) or `./build.sh dev clean` to clean dev artefacts.
