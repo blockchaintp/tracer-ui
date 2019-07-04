@@ -47,7 +47,9 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh "echo TODO"
+        sh ''' 
+          ./build.sh prod build
+        '''
       }
     }
 
