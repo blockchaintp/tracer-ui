@@ -18,6 +18,7 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
 
 import SimpleTable from 'components/table/SimpleTable'
 
@@ -25,6 +26,8 @@ const transactionFields =[{
   title: 'Event Type',
 },{
   title: 'Attributes',
+},{
+  title: 'Data',
 }]
 
 const styles = theme => ({
@@ -45,6 +48,9 @@ class HomePage extends React.Component {
     } = this.props
     return (
       <div>
+        <Typography variant="h4" component="h4">
+        Daml RPC
+         </Typography>
         <Tabs value={this.state.value} onChange={(event, newValue)=>{
           this.state.value = newValue
         }}>

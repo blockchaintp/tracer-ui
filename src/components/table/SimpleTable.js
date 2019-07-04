@@ -65,11 +65,9 @@ class SimpleTable extends React.Component {
   render() {
     const { 
       classes,
-      selected,
       data,
       fields,
       getActions, 
-      onRowClick,
       pagination,
       hideHeaderIfEmpty,
     } = this.props
@@ -86,7 +84,7 @@ class SimpleTable extends React.Component {
             {
               (!hideHeaderIfEmpty || data.length > 0) && (
                 <TableHead>
-                  <TableRow>
+                  <TableRow key={Math.floor(Math.random()*100000000000)}>
                     {
                       fields.map((field, i) => {
                         return (
@@ -109,7 +107,58 @@ class SimpleTable extends React.Component {
             }
             <TableBody>
               {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(dataRow => {
-                  return (<TableCell>{console.log(dataRow)}</TableCell>)
+                return dataRow.events.map((event)=>{
+                  return (
+                    <TableRow key={Math.floor(Math.random()*100000000000)}>
+                      {
+                        fields.map((field, i) => {
+                          if ( i == 0 ){
+                            return (
+                              <TableCell key={ i } align={ field.numeric ? 'right' : 'left' } className={ classes.autoCell }>
+                                {
+                                  event.eventType
+                                }
+                              </TableCell>
+                            )
+                          }else if (i == 1){
+                            return (
+                              <TableCell key={ i } align={ field.numeric ? 'right' : 'left' } className={ classes.autoCell }>
+                                <List className={ classes.autoCell }>
+                                {
+                                  event.attributes.map((attribute)=>{
+                                    return(
+                                      <ListItem className={ classes.autoCell }>
+                                        <ListItemText className={ classes.autoCell }>
+                                          { attribute.key + ' : ' + attribute.value }
+                                        </ListItemText>
+                                      </ListItem>
+                                    )
+                                  })
+                                }
+                                </List>
+                              </TableCell>
+                            )
+                          }else{
+                            return (
+                              <TableCell key={ i } align={ field.numeric ? 'right' : 'left' } className={ classes.autoCell }>
+                                {
+                                 event.data != null? event.data : 'NA'
+                                }
+                              </TableCell>
+                            )
+                          }
+                        })
+                      }
+                      {
+                        getActions ? (
+                          <TableCell align='right'>
+                            { getActions(dataRow) }
+                          </TableCell>
+                        ) : null
+                      }
+                    </TableRow>
+                  );
+                })  
               })}
             </TableBody>
           </Table>
