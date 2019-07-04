@@ -15,8 +15,10 @@
 
 version: '3'
 services:
+
   router:
     image: binocarlos/noxy
+    container_name: mock_router
     ports:
       - 80:80
     depends_on:
@@ -49,6 +51,7 @@ services:
     build:
       context: ../mock-api
       dockerfile: Dockerfile
+    image: ${MOCK_API_IMAGE}
     entrypoint: bash -c 'yarn run serve'
     environment:
       - NODE_ENV=development

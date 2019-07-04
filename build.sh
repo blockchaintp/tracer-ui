@@ -18,6 +18,7 @@ function devclean(){
         docker rm -f $(docker ps -aq)
         docker rmi -f $(docker images --filter "dangling=true" -q)
         docker rmi -f ${DEV_IMAGE}:${ISOLATION_ID}
+        docker rmi -f ${MOCK_API_IMAGE}
     else
         echo "Set ISOLATION_ID"
         exit 1
@@ -75,6 +76,10 @@ case $COMMAND in
         ;;
     "prod")
         prod $SUBCOMMAND
+        ;;
+    "clean")
+        devclean
+        prodclean
         ;;
     *)
         echo "$0 dev [mock] | prod | clean"

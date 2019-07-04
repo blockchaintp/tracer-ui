@@ -22,14 +22,14 @@ services:
     ports:
       - 80:80
     depends_on:
-      - api
-      - frontend
+      - daml-rpc
+      - tracer-ui
     environment:
       - NOXY_DEFAULT_HOST=tracer-ui
       - NOXY_DEFAULT_PORT=8080
       - NOXY_DEFAULT_WS=1
       - NOXY_API_FRONT=/transactions
-      - NOXY_API_HOST=sawtooth-daml-rpc
+      - NOXY_API_HOST=daml-rpc
       - NOXY_API_PORT=5051
 
   tracer-ui:
@@ -37,7 +37,7 @@ services:
     container_name: tracer-ui_dev
     ports:
       - 8080:8080
-    entrypoint: bash -c 'yarn run develop'
+    entrypoint: ["bash","nginx_entry.sh"]
     environment:
       - NODE_ENV=development
     volumes:
@@ -94,14 +94,14 @@ services:
     entrypoint: sawtooth-rest-api  --connect tcp://validator:4004 --bind rest-api:8008
 
   daml-tp:
-    image: dev.catenasys.com:8083/paul/sawtooth-daml-tp
+    image: dev.catenasys.com:8083/paul/sawtooth-daml-tp:local
     container_name: sawtooth-daml-tp
     command: "/opt/sawtooth-daml-tp/entrypoint.sh tcp://validator:4004"
     depends_on:
       - validator
 
   daml-rpc:
-    image: dev.catenasys.com:8083/paul/sawtooth-daml-rpc
+    image: dev.catenasys.com:8083/paul/sawtooth-daml-rpc:local
     container_name: sawtooth-daml-rpc
     expose:
       - 9000
@@ -117,7 +117,7 @@ services:
       - validator
 
   timekeeper:
-    image: dev.catenasys.com:8083/paul/timekeeper
+    image: dev.catenasys.com:8083/paul/timekeeper:local
     container_name: timekeeper
     command: "/opt/timekeeper/entrypoint.sh tcp://validator:4004"
     depends_on:
