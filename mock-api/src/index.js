@@ -27,20 +27,12 @@ const fixtures = require('./fixtures')
 const app = express()
 app.use(bodyParser.json())
 
-app.get('/api/v1/transactions/:type', (req, res, next) => {
+app.get('/transactions/:type', (req, res, next) => {
   const type = req.params.type
   const data = fixtures.transactions[type]
 
   if(!data) return next(`no transactions found of type: ${type}`)
-
-  const mappedData = data.map((item, i) => {
-    return Object.assign({}, item, {
-      id: i,
-      created: new Date().getTime(),
-    })
-  })
-
-  res.json(mappedData)
+  res.json(data)
 })
 
 app.use((req, res, next) => {

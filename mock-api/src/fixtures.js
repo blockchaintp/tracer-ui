@@ -12,27 +12,49 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ------------------------------------------------------------------------------
-const read = [{
-  name: 'a',
-  type: 'read',
+const read = [{events: [{
+  eventType: 'sawtooth/daml',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
 },{
-  name: 'b',
-  type: 'read',
+  eventType: 'sawtooth/data',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
+  data: '123456',
 },{
-  name: 'c',
-  type: 'read',
-}]
+  eventType: 'sawtooth/something',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
+}]},{events: [{
+  eventType: 'sawtooth/daml',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
+},{
+  eventType: 'sawtooth/blockchain',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
+},{
+  eventType: 'sawtooth/blockchain',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
+}]}]
 
-const write = [{
-  name: 'd',
-  type: 'write',
+const write = [{events:[{
+  eventType: 'sawtooth/data',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
+  data: 'wwwwass',
 },{
-  name: 'e',
-  type: 'write',
+  eventType: 'sawtooth/something',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
 },{
-  name: 'f',
-  type: 'write',
-}]
+  eventType: 'sawtooth/data',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
+  data: 'qswer3',
+}]},{events:[{
+  eventType: 'sawtooth/blockchain',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
+},{
+  eventType: 'sawtooth/data',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
+  data: 'wsssss',
+},{
+  eventType: 'sawtooth/blockchain',
+  attributes: [{key:'k1',value:'1'},{key:'k2',value:'2'}],
+}]}]
 
 module.exports = {
   transactions: {

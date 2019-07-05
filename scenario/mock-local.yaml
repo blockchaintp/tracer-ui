@@ -15,8 +15,10 @@
 
 version: '3'
 services:
+
   router:
     image: binocarlos/noxy
+    container_name: mock_router
     ports:
       - 80:80
     depends_on:
@@ -26,7 +28,7 @@ services:
       - NOXY_DEFAULT_HOST=frontend
       - NOXY_DEFAULT_PORT=8080
       - NOXY_DEFAULT_WS=1
-      - NOXY_API_FRONT=/api/v1
+      - NOXY_API_FRONT=/transactions
       - NOXY_API_HOST=api
     networks:
       - tracer-ui_mock
@@ -49,6 +51,7 @@ services:
     build:
       context: ../mock-api
       dockerfile: Dockerfile
+    image: ${MOCK_API_IMAGE}
     entrypoint: bash -c 'yarn run serve'
     environment:
       - NODE_ENV=development
