@@ -28,6 +28,7 @@ pipeline {
 
   environment {
     ISOLATION_ID = sh(returnStdout: true, script: 'echo $BUILD_TAG | sha256sum | cut -c1-64').trim()
+    PROD_IMAGE='catenasys/tracer-ui'
   }
 
   stages {
@@ -48,7 +49,7 @@ pipeline {
     stage('Build') {
       steps {
         sh ''' 
-          ./build.sh prod build
+          docker-compose -f ./docker-compose-build.yaml build prod
         '''
       }
     }
