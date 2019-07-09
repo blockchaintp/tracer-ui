@@ -73,6 +73,7 @@ pipeline {
   post {
       always {
         sh '''
+          docker rmi -f $(docker images --filter "dangling=true" -q)
           for img in `docker images --filter reference="*:$ISOLATION_ID" --format "{{.Repository}}"`; do
             docker rmi -f $img:$ISOLATION_ID
           done
