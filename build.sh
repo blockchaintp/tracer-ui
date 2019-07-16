@@ -3,6 +3,13 @@
 COMMAND="$1"
 SUBCOMMAND="$2"
 
+export DEV_IMAGE=dev/tracer-ui
+export PROD_IMAGE=catenasys/tracer-ui
+export PROD_CONTAINER=tracer-ui
+export MOCK_API_IMAGE=mock/api
+
+export ISOLATION_ID="dev"
+
 function devmock(){
     if [ ! -z ${ISOLATION_ID} ]; then
         docker-compose -f ./docker-compose-build.yaml build dev
@@ -49,6 +56,10 @@ function prodbuild(){
     fi
 }
 
+function prodmock(){
+    docker-compose -f ./scenario/daml-local.yaml up
+}
+
 function prodclean(){
     docker rmi -f $(docker images --filter "dangling=true" -q)
     docker rmi -f ${PROD_IMAGE}:${ISOLATION_ID}
@@ -60,16 +71,18 @@ function prod(){
         "build")
             prodbuild
             ;;
+        "mock")
+            prodmock
+            ;;
         "clean")
             prodclean
             ;;
         *)
-            echo "$COMMAND [build | clean]"
+            echo "$COMMAND [build | mock | clean]"
             ;;
     esac
 }
 
-source .env
 case $COMMAND in
    "dev")
         dev $SUBCOMMAND
@@ -82,6 +95,6 @@ case $COMMAND in
         prodclean
         ;;
     *)
-        echo "$0 dev [mock] | prod | clean"
+        echo "$0 dev [mock|clean] | prod [build|clean] | clean"
         ;;
 esac
