@@ -16,4 +16,10 @@ The main script to build `development` and `production` artefacts is `./build.sh
 
 ## Release process
 1. Run `./build.sh prod build` to build a production image.
-2. Run `.buld.sh prod clean` to clean prod artefacts
+2. Run `./build.sh prod clean` to clean prod artefacts
+
+
+## Mocking production build locally
+1. Run `docker login dev.catenasys.com:8083`
+2. Run `./build.sh prod mock`
+3. Start browser connecting to `localhost`
