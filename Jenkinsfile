@@ -17,7 +17,7 @@
 
 pipeline {
   agent any
-  
+
   triggers {cron('H H * * *')}
 
   options {
@@ -28,7 +28,7 @@ pipeline {
 
   environment {
     ISOLATION_ID = sh(returnStdout: true, script: 'echo $BUILD_TAG | sha256sum | cut -c1-64').trim()
-    PROD_IMAGE='catenasys/tracer-ui'
+    PROD_IMAGE='tracer-ui'
   }
 
   stages {
@@ -48,7 +48,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh ''' 
+        sh '''
           docker-compose -f ./docker-compose-build.yaml build prod
         '''
       }
