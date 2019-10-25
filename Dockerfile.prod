@@ -16,7 +16,7 @@
 FROM mhart/alpine-node:11.12 as builder
 RUN apk update
 RUN apk upgrade
-RUN apk add bash git
+RUN apk add bash
 WORKDIR /app/frontend
 COPY ./package.json /app/frontend/package.json
 COPY ./yarn.lock /app/frontend/yarn.lock
