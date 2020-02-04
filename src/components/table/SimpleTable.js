@@ -54,7 +54,7 @@ class SimpleTable extends React.Component {
     };
   }
 
-  handleChangePage = (event, page) => {
+  handleChangePage = (page) => {
     this.setState({ page })
   }
 
@@ -67,7 +67,6 @@ class SimpleTable extends React.Component {
       classes,
       data,
       fields,
-      getActions, 
       pagination,
       hideHeaderIfEmpty,
     } = this.props
