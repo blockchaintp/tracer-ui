@@ -1,4 +1,6 @@
 # Tracer UI
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fblockchaintp%2Ftracer-ui.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fblockchaintp%2Ftracer-ui?ref=badge_shield)
+
 
 Source code to display data served from any RESTFul api source that currently complies to this [format](./mock-api/fixtures).
 
@@ -23,3 +25,6 @@ The main script to build `development` and `production` artefacts is `./build.sh
 1. Run `docker login dev.catenasys.com:8083`
 2. Run `./build.sh prod mock`
 3. Start browser connecting to `localhost`
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fblockchaintp%2Ftracer-ui.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fblockchaintp%2Ftracer-ui?ref=badge_large)
