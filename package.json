@@ -22,7 +22,7 @@
     "classnames": "^2.2.6",
     "dotty": "^0.1.0",
     "ecstatic": "^4.1.4",
-    "immer": "^1.10.0",
+    "immer": "^8.0.1",
     "normalizr": "^3.3.0",
     "prop-types": "15.7.2",
     "react": "16.8.4",
