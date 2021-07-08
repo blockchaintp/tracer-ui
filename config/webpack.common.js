@@ -1,62 +1,46 @@
-// Copyright 2019 Blockchain Technology Partners
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-// ------------------------------------------------------------------------------
+/* eslint-disable import/no-extraneous-dependencies */
+import { ProgressPlugin } from 'webpack'
+import { resolve as _resolve } from 'path'
+import CleanWebpackPlugin from 'clean-webpack-plugin'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import CopyWebpackPlugin from 'copy-webpack-plugin'
 
-const webpack = require('webpack')
-const path = require('path')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-
-module.exports = {
-  entry: './src/index.js',
-  output: {
-    path: path.resolve(__dirname, '..', 'dist'),
-    filename: '[name].[hash].bundle.js',
-    chunkFilename: '[name].[hash].bundle.js',
-    publicPath: '/',
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
+export const entry = './src/index.js'
+export const output = {
+  path: _resolve(__dirname, '..', 'dist'),
+  filename: '[name].[hash].bundle.js',
+  chunkFilename: '[name].[hash].bundle.js',
+  publicPath: '/',
+}
+export const module = {
+  rules: [
+    {
+      test: /\.js$/,
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader',
       },
-    ],
-  },
-  resolve: {
-    modules: [path.resolve(__dirname, '..', 'src'), 'node_modules']
-  },
-  plugins: [
-    new webpack.ProgressPlugin(),
-    new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({ 
-      template: './src/index.html', 
-      filename: './index.html',
-      hash: true,
-    }),
-    new CopyWebpackPlugin([{
-      from: 'src/assets',
-      to: '',
-    }]),
-  ],
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
     },
+  ],
+}
+export const resolve = {
+  modules: [_resolve(__dirname, '..', 'src'), 'node_modules']
+}
+export const plugins = [
+  new ProgressPlugin(),
+  new CleanWebpackPlugin(),
+  new HtmlWebpackPlugin({
+    template: './src/index.html',
+    filename: './index.html',
+    hash: true,
+  }),
+  new CopyWebpackPlugin([{
+    from: 'src/assets',
+    to: '',
+  }]),
+]
+export const optimization = {
+  splitChunks: {
+    chunks: 'all',
   },
 }

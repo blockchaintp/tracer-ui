@@ -15,6 +15,7 @@
 // limitations under the License.
 // ------------------------------------------------------------------------------
 
+
 pipeline {
   agent any
 
@@ -28,7 +29,6 @@ pipeline {
 
   environment {
     ISOLATION_ID = sh(returnStdout: true, script: 'echo $BUILD_TAG | sha256sum | cut -c1-64').trim()
-    PROD_IMAGE='tracer-ui'
   }
 
   stages {
@@ -49,44 +49,67 @@ pipeline {
     stage('Build') {
       steps {
         sh '''
-          docker-compose -f ./docker-compose-build.yaml build prod
+          make clean build
         '''
       }
     }
 
-    // Test
+    stage('Test') {
+      steps {
+        sh '''
+          make test
+        '''
+      }
+    }
 
-    // Publish
+    stage('Package') {
+      steps {
+        sh '''
+          make package
+        '''
+      }
+    }
+
+    stage("Analyze") {
+      steps {
+        withSonarQubeEnv('sonarcloud') {
+          sh '''
+            make analyze
+          '''
+        }
+        waitForQualityGate abortPipeline: true
+      }
+    }
+
     stage('Create Archives') {
       steps {
         sh '''
-            REPO=$(git remote show -n origin | grep Fetch | awk -F'[/.]' '{print $6}')
-            VERSION=`git describe --always`
-            git archive HEAD --format=zip -9 --output=$REPO-$VERSION.zip
-            git archive HEAD --format=tgz -9 --output=$REPO-$VERSION.tgz
+          make archive
         '''
       }
     }
 
+    stage('Publish') {
+      steps {
+        sh '''
+          make publish
+        '''
+      }
+    }
   }
 
   post {
-      always {
-        sh '''
-          docker rmi -f $(docker images --filter "dangling=true" -q)
-          for img in `docker images --filter reference="*:$ISOLATION_ID" --format "{{.Repository}}"`; do
-            docker rmi -f $img:$ISOLATION_ID
-          done
-        '''
-      }
-      success {
-          archiveArtifacts '*.tgz, *.zip'
-      }
-      aborted {
-          error "Aborted, exiting now"
-      }
-      failure {
-          error "Failed, exiting now"
-      }
+    always {
+        recordIssues enabledForFailure: true, tool: cpd(pattern: '**/build/cpd.xml')
+    }
+    success {
+      echo "Successfully completed"
+    }
+    aborted {
+        error "Aborted, exiting now"
+    }
+    failure {
+        error "Failed, exiting now"
+    }
   }
 }

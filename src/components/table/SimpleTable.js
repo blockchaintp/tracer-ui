@@ -1,18 +1,3 @@
-// Copyright 2019 Blockchain Technology Partners
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-// ------------------------------------------------------------------------------
-
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
@@ -25,25 +10,25 @@ import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
+import ListItemText from '@material-ui/core/ListItemText';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
-const styles = theme => {
-  return {
-    root: {
-      width: '100%',
-    },
-    table: {
-      
-    },
-    tableWrapper: {
-      overflowX: 'auto',
-    },
-    autoCell: {
-      width: 'auto'
-    },
-  }
+const styles = () => ({
+  root: {
+    width: '100%',
+  },
+  table: {
 
-}
+  },
+  tableWrapper: {
+    overflowX: 'auto',
+  },
+  autoCell: {
+    width: 'auto',
+  },
+})
 
 class SimpleTable extends React.Component {
   constructor(props, context) {
@@ -58,16 +43,18 @@ class SimpleTable extends React.Component {
     this.setState({ page })
   }
 
-  handleChangeRowsPerPage = event => {
+  handleChangeRowsPerPage = (event) => {
     this.setState({ rowsPerPage: event.target.value })
   }
 
   render() {
-    const { 
+    const {
       classes,
+      selected,
       data,
       fields,
-      getActions, 
+      getActions,
+      onRowClick,
       pagination,
       hideHeaderIfEmpty,
     } = this.props
@@ -84,82 +71,120 @@ class SimpleTable extends React.Component {
             {
               (!hideHeaderIfEmpty || data.length > 0) && (
                 <TableHead>
-                  <TableRow key={Math.floor(Math.random()*100000000000)}>
+                  <TableRow>
                     {
-                      fields.map((field, i) => {
-                        return (
-                          <TableCell key={ i } align={ field.numeric ? 'right' : 'left' }>
-                            { field.title }
-                          </TableCell>
-                        )
-                      })
-                    }
-                    {
-                      getActions ? (
-                        <TableCell align='right'>
-                          Actions
+                      fields.map((field, i) => (
+                        <TableCell key={i} align={field.numeric ? 'right' : 'left'}>
+                          { field.title }
                         </TableCell>
-                      ) : null
+                      ))
                     }
                   </TableRow>
                 </TableHead>
               )
             }
             <TableBody>
-              {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(dataRow => {
-                return dataRow.events.map((event)=>{
-                  return (
-                    <TableRow key={Math.floor(Math.random()*100000000000)}>
-                      {
-                        fields.map((field, i) => {
-                          if ( i == 0 ){
-                            return (
-                              <TableCell key={ i } align={ field.numeric ? 'right' : 'left' } className={ classes.autoCell }>
-                                {
-                                  event.eventType
+              {
+                (typeof data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map === 'function')
+                  && data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((dataRow) => {
+                    if (dataRow.events !== undefined) {
+                      return dataRow.events.map((event) => (
+                        <TableRow
+                          key={Math.floor(Math.random() * 10000)}
+                        >
+                          {
+                              fields.map((field, i) => {
+                                if (i == 0) {
+                                  return (
+                                    <TableCell key={i} align={field.numeric ? 'right' : 'left'} className={classes.autoCell}>
+                                      {
+                                        event.eventType
+                                      }
+                                    </TableCell>
+                                  )
                                 }
-                              </TableCell>
-                            )
-                          }else if (i == 1){
-                            return (
-                              <TableCell key={ i } align={ field.numeric ? 'right' : 'left' } className={ classes.autoCell }>
-                                <List className={ classes.autoCell }>
-                                {
-                                  event.attributes.map((attribute)=>{
-                                    return(
-                                      <ListItem className={ classes.autoCell }>
-                                        <ListItemText className={ classes.autoCell }>
-                                          { attribute.key + ' : ' + attribute.value }
-                                        </ListItemText>
-                                      </ListItem>
-                                    )
-                                  })
+                                return (
+                                  <TableCell key={i} align={field.numeric ? 'right' : 'left'} className={classes.autoCell}>
+                                    <List className={classes.autoCell}>
+                                      {
+                                        event.attributes.map((attribute) => (
+                                          <ListItem className={classes.autoCell}>
+                                            <ListItemText className={classes.autoCell}>
+                                              { `${attribute.key} : ${attribute.value}` }
+                                            </ListItemText>
+                                          </ListItem>
+                                        ))
+                                      }
+                                    </List>
+                                  </TableCell>
+                                )
+                              })
+                            }
+                        </TableRow>
+                      ))
+                    }
+                    return (
+                      <TableRow
+                        key={Math.floor(Math.random() * 10000)}
+                      >
+                        <TableCell key={0}>
+                          <List className={classes.autoCell}>
+                            <ListItem className={classes.autoCell}>
+                              <ListItemText className={classes.autoCell}>
+                                header:
+                                {' '}
+                                {dataRow.header}
+                              </ListItemText>
+                            </ListItem>
+                            <ListItem className={classes.autoCell}>
+                              <ListItemText className={classes.autoCell}>
+                                signature:
+                                {' '}
+                                {dataRow.header_signature}
+                              </ListItemText>
+                            </ListItem>
+                            <ListItem className={classes.autoCell}>
+                              <ListItemText className={classes.autoCell}>
+                                trace:
+                                {' '}
+                                {(dataRow.trace) ? 'true' : 'false'}
+                              </ListItemText>
+                            </ListItem>
+                          </List>
+                        </TableCell>
+                        <TableCell key={1}>
+                          <List className={classes.autoCell}>
+                            {
+                                  dataRow.transactions.map((transaction) => (
+                                    <ListItem className={classes.autoCell}>
+                                      <Card>
+                                        <CardContent>
+                                          <Typography variant="subtitle1">
+                                            header:
+                                            {' '}
+                                            {transaction.header}
+                                          </Typography>
+                                          <Typography variant="subtitle1">
+                                            signature:
+                                            {' '}
+                                            {transaction.header_signature}
+                                          </Typography>
+                                          <Typography variant="subtitle1">
+                                            payload:
+                                            {' '}
+                                            {transaction.payload}
+                                          </Typography>
+                                        </CardContent>
+                                      </Card>
+                                    </ListItem>
+                                  ))
                                 }
-                                </List>
-                              </TableCell>
-                            )
-                          }else{
-                            return (
-                              <TableCell key={ i } align={ field.numeric ? 'right' : 'left' } className={ classes.autoCell }>
-                                {
-                                 event.data != null? event.data : 'NA'
-                                }
-                              </TableCell>
-                            )
-                          }
-                        })
-                      }
-                      {
-                        getActions ? (
-                          <TableCell align='right'>
-                            { getActions(dataRow) }
-                          </TableCell>
-                        ) : null
-                      }
-                    </TableRow>
-                  );
-                })  
-              })}
+                          </List>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })
+              }
             </TableBody>
           </Table>
         </div>
