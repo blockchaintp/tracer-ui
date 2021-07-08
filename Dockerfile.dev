@@ -14,12 +14,18 @@
 # ------------------------------------------------------------------------------
 
 FROM mhart/alpine-node:11.12
-RUN apk update
-RUN apk upgrade
-RUN apk add bash
+
+RUN apk update && \
+  apk upgrade && \
+  apk add bash git
+
 WORKDIR /app/frontend
+
+COPY ./.babelrc /app/frontend/
+COPY ./src /app/frontend/src
+COPY ./config /app/frontend/config
 COPY ./package.json /app/frontend/package.json
-COPY ./yarn.lock /app/frontend/yarn.lock
-RUN yarn install
-COPY ./ /app/frontend
-ENTRYPOINT ["yarn", "run", "develop"]
+COPY ./package-lock.json /app/frontend/package-lock.json
+RUN npm ci
+
+ENTRYPOINT ["npm", "run", "develop"]

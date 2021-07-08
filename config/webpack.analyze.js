@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ------------------------------------------------------------------------------
+/* eslint-disable import/no-extraneous-dependencies */
 
 const merge = require('webpack-merge')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const VisualizerPlugin = require('webpack-visualizer-plugin')
 
 const prod = require('./webpack.prod')
@@ -27,7 +28,7 @@ module.exports = merge(prod, {
       openAnalyzer: false,
     }),
     new VisualizerPlugin({
-      filename: './analyze/webpack-visualizer-plugin.html'
+      filename: './analyze/webpack-visualizer-plugin.html',
     }),
   ],
 })

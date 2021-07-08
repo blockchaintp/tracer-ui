@@ -1,18 +1,3 @@
-// Copyright 2019 Blockchain Technology Partners
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-// ------------------------------------------------------------------------------
-
 import { createSelector } from 'reselect'
 import routes from 'router/routes'
 import findRoute from 'router/utils/findRoute'
@@ -20,13 +5,13 @@ import findRoute from 'router/utils/findRoute'
 // pluck a single prop from a previous selector
 const prop = (baseSelector, propName) => createSelector(
   baseSelector,
-  data => (data || {})[propName],
+  (data) => (data || {})[propName],
 )
 
 // return an object of prop selectors given a base selector
 // and an array of prop names
 const props = (baseSelector, propNames) => propNames.reduce((all, propName) => {
-  if(typeof(propName) == 'string') {
+  if (typeof (propName) === 'string') {
     propName = {
       selectorName: propName,
       dataField: propName,
@@ -36,12 +21,10 @@ const props = (baseSelector, propNames) => propNames.reduce((all, propName) => {
   return all
 }, {})
 
-const networkProps = (prefix, fields) => fields.map(field => {
-  return {
-    selectorName: field,
-    dataField: [prefix, field].join('.'),
-  }
-})
+const networkProps = (prefix, fields) => fields.map((field) => ({
+  selectorName: field,
+  dataField: [prefix, field].join('.'),
+}))
 
 const entity = ({
   baseSelector,
@@ -49,25 +32,23 @@ const entity = ({
 }) => {
   const entities = createSelector(
     baseSelector,
-    baseStore => baseStore.entities[entityName] || {},
+    (baseStore) => baseStore.entities[entityName] || {},
   )
   const ids = createSelector(
     baseSelector,
-    baseStore => baseStore.result || [],
+    (baseStore) => baseStore.result || [],
   )
   const list = createSelector(
     entities,
     ids,
-    (entities, ids) => ids.map(id => entities[id])
+    (entities, ids) => ids.map((id) => entities[id]),
   )
   const item = createSelector(
     entities,
     routeParamId,
-    (entities, id) => {
-      return id == 'new' ?
-        {} :
-        entities[id]
-    },
+    (entities, id) => (id == 'new'
+      ? {}
+      : entities[id]),
   )
 
   return {
@@ -78,25 +59,25 @@ const entity = ({
   }
 }
 
-const networkErrors = state => state.network.errors
-const networkLoading = state => state.network.loading
+const networkErrors = (state) => state.network.errors
+const networkLoading = (state) => state.network.loading
 
-const route = state => state.router.route
-const previousRoute = state => state.router.previousRoute
+const route = (state) => state.router.route
+const previousRoute = (state) => state.router.previousRoute
 const routeParams = prop(route, 'params')
 const routeName = prop(route, 'name')
 const routeParamId = createSelector(
   routeParams,
-  params => params.id,
+  (params) => params.id,
 )
 const routeSegments = createSelector(
   routeName,
-  name => name.split('.'),
+  (name) => name.split('.'),
 )
 
-const snackbarStore = state => state.snackbar
-const counterStore = state => state.counter
-const transactionStore = state => state.transactions
+const snackbarStore = (state) => state.snackbar
+const counterStore = (state) => state.counter
+const transactionStore = (state) => state.transactions
 
 const selectors = {
 
@@ -108,47 +89,47 @@ const selectors = {
     fullRoute: (state) => findRoute(routes, routeName(state)),
 
     /*
-    
+
       get the current route name
-    
+
     */
     name: routeName,
 
     /*
-    
+
       get the current route params
-    
+
     */
     params: routeParams,
     idParam: routeParamId,
 
     /*
-    
+
       split the current route name by period
       so if the current route name is 'content.books.1'
       it returns ['content', 'books', 1]
-    
+
     */
     segments: routeSegments,
     /*
-    
+
       get a single segment of the route based on index
       so if the current route name is 'content.books.1'
       index of 1 would return 'books'
-    
+
     */
     segment: (state, index) => routeSegments(state)[index],
     /*
-    
+
       get a single segment of the route that is after the given segment
       so if the current route name is 'content.books.1'
       segment of 'content' would return 'books'
-    
+
     */
     segmentAfter: (state, segment) => {
       const parts = routeSegments(state)
       const segmentIndex = parts.indexOf(segment)
-      if(segmentIndex < 0) return null
+      if (segmentIndex < 0) return null
       return parts[segmentIndex + 1]
     },
   },
@@ -169,8 +150,8 @@ const selectors = {
   },
 
   transactions: {
-    read: state => transactionStore(state).transactions.read,
-    write: state => transactionStore(state).transactions.write,
+    read: (state) => transactionStore(state).transactions.read,
+    write: (state) => transactionStore(state).transactions.write,
   },
 
 }

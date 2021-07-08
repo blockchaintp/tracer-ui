@@ -34,7 +34,7 @@ services:
       - tracer-ui_mock
 
   frontend:
-    image: "${DEV_IMAGE}:${ISOLATION_ID}"
+    image: tracer-ui-dev:${ISOLATION_ID}
     ports:
       - 8080:8080
     environment:

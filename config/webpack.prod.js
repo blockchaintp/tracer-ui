@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ------------------------------------------------------------------------------
+/* eslint-disable import/no-extraneous-dependencies */
 
 const webpack = require('webpack')
 const merge = require('webpack-merge')

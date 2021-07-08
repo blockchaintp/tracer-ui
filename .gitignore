@@ -218,3 +218,6 @@ typings/
 
 # direnv settings
 .envrc
+build
+markers
+build

@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ------------------------------------------------------------------------------
+/* eslint-disable import/no-extraneous-dependencies */
 
 const webpack = require('webpack')
 const path = require('path')
@@ -39,13 +40,13 @@ module.exports = {
     ],
   },
   resolve: {
-    modules: [path.resolve(__dirname, '..', 'src'), 'node_modules']
+    modules: [path.resolve(__dirname, '..', 'src'), 'node_modules'],
   },
   plugins: [
     new webpack.ProgressPlugin(),
     new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({ 
-      template: './src/index.html', 
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
       filename: './index.html',
       hash: true,
     }),

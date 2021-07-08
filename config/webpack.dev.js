@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ------------------------------------------------------------------------------
+/* eslint-disable import/no-extraneous-dependencies */
 
 const webpack = require('webpack')
 const merge = require('webpack-merge')
@@ -21,7 +22,7 @@ const common = require('./webpack.common')
 
 module.exports = merge(common, {
   mode: 'development',
-  devtool: 'cheap-module-source-map', 
+  devtool: 'cheap-module-source-map',
   plugins: [
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('development') }),
     new ErrorOverlayPlugin(),

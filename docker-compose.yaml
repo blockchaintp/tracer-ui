@@ -21,16 +21,10 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.dev
-    image: ${DEV_IMAGE}:${ISOLATION_ID}
-    entrypoint: bash -c 'yarn run develop'
-    environment:
-      - NODE_ENV=development
-    
+    image: tracer-ui-dev:${ISOLATION_ID}
+
   prod:
     build:
       context: ./
       dockerfile: Dockerfile.prod
-    image: ${PROD_IMAGE}:${ISOLATION_ID}
-    entrypoint: bash -c 'nginx_entry.sh'
-    environment:
-      - NODE_ENV=production
+    image: tracer-ui:${ISOLATION_ID}

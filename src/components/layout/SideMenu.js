@@ -1,18 +1,3 @@
-// Copyright 2019 Blockchain Technology Partners
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-// ------------------------------------------------------------------------------
-
 import React from 'react'
 import PropTypes from 'prop-types'
 
@@ -28,7 +13,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 
 import settings from 'settings'
 
-const styles = (theme) => ({
+const styles = () => ({
   menuButton: {
     marginLeft: -12,
     marginRight: 20,
@@ -43,7 +28,7 @@ class SideMenu extends React.Component {
     drawerOpen: false,
   }
 
-  handleOpen = event => {
+  handleOpen = (event) => {
     this.setState({ drawerOpen: true })
   }
 
@@ -51,41 +36,23 @@ class SideMenu extends React.Component {
     this.setState({ drawerOpen: false })
   }
 
-  clickItem(item) {
-    const {
-      openPage,
-    } = this.props
-
-    if(typeof(item.handler) === 'string') {
-      openPage(item.handler)
-      this.handleClose()
-    }
-    else if(typeof(item.handler) === 'function') {
-      item.handler()
-      this.handleClose()
-    }
-    else {
-      throw new Error(`unknown SideMenu item handler for ${item.title}`)
-    }
-  }
-
   getMenu() {
-    const { 
+    const {
       items,
     } = this.props
 
     return items.map((item, i) => {
-      if(item === '-') {
+      if (item === '-') {
         return (
-          <Divider key={ i } />
+          <Divider key={i} />
         )
       }
 
       return (
-        <ListItem 
-          button 
-          key={ i }
-          onClick={ () => this.clickItem(item) }
+        <ListItem
+          button
+          key={i}
+          onClick={() => this.clickItem(item)}
         >
           {
             item.icon && (
@@ -94,12 +61,28 @@ class SideMenu extends React.Component {
               </ListItemIcon>
             )
           }
-          <ListItemText 
-            primary={ item.title }
+          <ListItemText
+            primary={item.title}
           />
         </ListItem>
       )
     })
+  }
+
+  clickItem(item) {
+    const {
+      openPage,
+    } = this.props
+
+    if (typeof (item.handler) === 'string') {
+      openPage(item.handler)
+      this.handleClose()
+    } else if (typeof (item.handler) === 'function') {
+      item.handler()
+      this.handleClose()
+    } else {
+      throw new Error(`unknown SideMenu item handler for ${item.title}`)
+    }
   }
 
   render() {
@@ -108,24 +91,24 @@ class SideMenu extends React.Component {
 
     return (
       <div>
-        <IconButton 
-          className={classes.menuButton} 
-          color="inherit" 
-          aria-label="Menu" 
+        <IconButton
+          className={classes.menuButton}
+          color="inherit"
+          aria-label="Menu"
           onClick={this.handleOpen}
         >
           <MenuIcon />
         </IconButton>
         <SwipeableDrawer
-          open={ drawerOpen }
-          onClose={ this.handleClose }
-          onOpen={ this.handleOpen }
+          open={drawerOpen}
+          onClose={this.handleClose}
+          onOpen={this.handleOpen}
         >
           <div
             tabIndex={0}
             role="button"
-            onClick={ this.handleClose }
-            onKeyDown={ this.handleClose }
+            onClick={this.handleClose}
+            onKeyDown={this.handleClose}
           >
             <div className={classes.list}>
               <List component="nav">

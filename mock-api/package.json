@@ -1,8 +1,8 @@
 {
-  "name": "tracer-ui",
+  "name": "tracer-ui-mock-api",
   "private": true,
-  "version": "0.0.1",
-  "description": "mock api for the UI",
+  "version": "1.0.0",
+  "description": "mock api for the tracer service",
   "scripts": {
     "serve": "node src/index.js"
   },
