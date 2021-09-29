@@ -19,8 +19,6 @@
 pipeline {
   agent any
 
-  triggers {cron('H H * * *')}
-
   options {
     ansiColor('xterm')
     timestamps()
@@ -77,7 +75,6 @@ pipeline {
             make analyze
           '''
         }
-        waitForQualityGate abortPipeline: true
       }
     }
 
