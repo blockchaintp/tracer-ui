@@ -4,6 +4,7 @@ include $(MAKEFILE_DIR)/standard_defs.mk
 PMD_IMAGE = blockchaintp/pmd:latest
 
 build: $(MARKERS)/build_npm
+	mkdir -p test
 
 test: $(MARKERS)/test_npm
 
