@@ -66,7 +66,7 @@
     "babel-tape-runner": "^3.0.0",
     "clean-webpack-plugin": "^2.0.1",
     "copy-webpack-plugin": "5.0.4",
-    "error-overlay-webpack-plugin": "^0.2.0",
+    "error-overlay-webpack-plugin": "^1.1.1",
     "eslint": "^7.28.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.23.4",
